@@ -56,6 +56,7 @@
     infodiv.innerHTML = name + "<br />X: " + x + "<br />Y: " + y;
   }
 </script>
+<div class="topright"><button class="button-account" onclick="window.location.href='pages/profil.php';" role="button"><span class="text">account</span></button></div>
 <div id="screen">
   <?php foreach ($players as $name => $player) { ?>
     <div
