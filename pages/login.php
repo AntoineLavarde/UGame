@@ -1,62 +1,76 @@
-<!DOCTYPE html>
-
-<html>
-    <head>
-        <meta charset="utf-8">
-        <Title>Login</Title>
-        <link href="css/style.css" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-    </head>
-    <body>
-        <div class="login">
-            <h1>Login</h1>
-            <form action="login.php" method="POST">
-                <label for="username">
-                    <i class="fas fa-user"></i>
-                </label>
-                <input type="text" name="username" placeholder="Username" id="username" required>
-                <label for="password">
-                    <i class="fas fa-lock"></i>
-                </label>
-                <input type="password" name="password" placeholder="Password" id="password" required>
-                <input type="submit" value="Login">
-            </form>
-            <p>New user ? Register right now :
-                <a href="register.php">Register</a>
-            </p>
-        </div>
-    </body>
-</html>
+<head>
+    <title>Register/Login</title>
+</head>
+<body>
+    <div class="main">
+        <form class="register">
+            <h3>Register</h3>
+            <label for="register_username">Username</label>
+            <input type="text" placeholder="Username" name="register_username" required>
+            <label for="register_password">Password</label>
+            <input type="password" placeholder="Password" name="register_password" required>
+            <label for="password_confirmation">Password Confirmation</label>
+            <input type="password" placeholder="Password Confirmation" name="password_confirmation" required>
+            <button type="submit">Register</button>
+        </form>
+        <form class="login">
+            <h3>Login</h3>
+            <label for="login_username">Username</label>
+            <input type="text" placeholder="Username" name="login_username">
+            <label for="login_password">Password</label>
+            <input type="password" placeholder="Password" name="login_password">
+            <button type="submit">Log In</button>
+        </form>
+    </div>
+</body>
 
 <?php
-    require('config.php');
 
     session_start();
+    require_once('config.php');
 
-    if (isset($_REQUEST['username'], $_REQUEST['password'])) {
-        $username = stripslashes($_REQUEST['username']);
+    if (isset($_REQUEST['register_username'], $_REQUEST['register_password'], $_REQUEST['password_confirmation'])) {
+        $username = stripslashes($_REQUEST['register_username']);
         $username = mysqli_real_escape_string($database, $username);
 
-        $password = stripslashes(password_hash($_REQUEST['password'], PASSWORD_BCRYPT));
+        $result = mysqli_query($database, "SELECT `username` FROM `users` WHERE `username` = '$username'");
+        $count = $result -> num_rows;
+
+        if ($count < 1) { #Print alert in JS if username already exists
+            if ($_REQUEST['register_password'] === $_REQUEST['password_confirmation']) {
+                $password = stripslashes(password_hash($_REQUEST['register_password'], PASSWORD_BCRYPT));
+                $password = mysqli_real_escape_string($database, $password);
+
+                $query = "INSERT INTO `users` (`username`, `password`) VALUES ('$username', '$password')";
+
+                mysqli_query($database, $query);
+            }
+        }
+    }
+
+    else if (isset($_REQUEST['login_username'], $_REQUEST['login_password'])) {
+        $username = stripslashes($_REQUEST['login_username']);
+        $username = mysqli_real_escape_string($database, $username);
+
+        $password = stripslashes($_REQUEST['login_password']);
         $password = mysqli_real_escape_string($database, $password);
 
-        $query = "SELECT * FROM users WHERE username=$username";
+        $query = mysqli_query($database, "SELECT `username` FROM `users` WHERE `username` = '$username'");
+        $count = $query -> num_rows;
 
-        $result = mysqli_query($database, $query);
-        $data = mysqli_fetch_array($result);
+        if ($count === 1) { #Print alert in JS if username doesn't exist
+            $request = "SELECT * FROM `users` WHERE `username` = '$username'";
 
-        if (mysqli_num_rows($result) != 0) {
+            $result = mysqli_query($database, $request);
+            $data = mysqli_fetch_array($result);
+
             if (password_verify($password, $data['password'])) {
                 $user = mysqli_fetch_assoc($result);
-                $_SESSION['user'] = $data['token'];
-                $_SESSION['userid'] = $data['id'];
-                header('Location: ../index.php');
+                $_SESSION['user'] = $data['username'];
+
+                header('Location: index.php');
                 die();
-            } else {
-                header('Location: ../index.php');
             }
-        } else {
-            header('Location: ../index.php');
         }
     }
 ?>
