@@ -1,13 +1,9 @@
 <?php
-    $_SESSION['user']="Antoine";
+    session_start();
     if(!isset($_SESSION['user'])){
         header('Location: login.php');
         die();
     }
-    
-include "config.php";
-$query = ("SELECT * FROM users WHERE username ='" . $_SESSION['user']. "'");
-$data = mysqli_query($database,$query);
 ?>
 <link rel="stylesheet" href="../css/style.css">
 <center>

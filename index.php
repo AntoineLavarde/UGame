@@ -14,9 +14,8 @@
 <head>
 <body> 
 <?php
-$array = array("config","login","profil","screen","disconnect");
 $dir = 'pages/';
-//$_SESSION['user']='Antoine';
+echo($_SESSION['user']);
 if(isset($_SESSION['user'])){
    $qs = ("SELECT * FROM users WHERE username ='" . $_SESSION['user']. "'");
    $data = mysqli_query($database,$qs);
