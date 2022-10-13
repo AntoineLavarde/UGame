@@ -6,32 +6,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="main">
-        <form class="register">
-            <h3>Register</h3>
-            <label for="register_username">Username</label>
-            <input type="text" placeholder="Username" name="register_username" required>
-            <label for="register_password">Password</label>
-            <input type="password" placeholder="Password" name="register_password" required>
-            <label for="password_confirmation">Password Confirmation</label>
-            <input type="password" placeholder="Password Confirmation" name="password_confirmation" required>
-            <button type="submit">Register</button>
-        </form>
-        <form class="login">
-            <h3>Login</h3>
-            <label for="login_username">Username</label>
-            <input type="text" placeholder="Username" name="login_username">
-            <label for="login_password">Password</label>
-            <input type="password" placeholder="Password" name="login_password">
-            <button type="submit">Log In</button>
-        </form>
-    </div>
+    <form class="register" method="post">
+        <h3>Register</h3>
+        <label for="register_username">Username</label>
+        <input type="text" placeholder="Username" name="register_username" required>
+        <label for="register_password">Password</label>
+        <input type="password" placeholder="Password" name="register_password" required>
+        <label for="password_confirmation">Password Confirmation</label>
+        <input type="password" placeholder="Password Confirmation" name="password_confirmation" required>
+        <button type="submit">Register</button>
+    </form>
+    <form class="login" method="post">
+        <h3>Login</h3>
+        <label for="login_username">Username</label>
+        <input type="text" placeholder="Username" name="login_username" required>
+        <label for="login_password">Password</label>
+        <input type="password" placeholder="Password" name="login_password" required>
+        <button type="submit">Log In</button>
+    </form>
 </body>
 
 <?php
 
     session_start();
     require_once('config.php');
+
+    function generateRandomCoordinates() {
+        return rand(0, 500);
+    }
+
+    function generateRandomColor() {
+        return '#' . dechex(rand(0x000000, 0xFFFFFF));
+    }
 
     if (isset($_REQUEST['register_username'], $_REQUEST['register_password'], $_REQUEST['password_confirmation'])) {
         $username = stripslashes($_REQUEST['register_username']);
@@ -45,9 +51,28 @@
                 $password = stripslashes(password_hash($_REQUEST['register_password'], PASSWORD_BCRYPT));
                 $password = mysqli_real_escape_string($database, $password);
 
-                $query = "INSERT INTO `users` (`username`, `password`) VALUES ('$username', '$password')";
+                $x_coordinate = generateRandomCoordinates();
+                $x_coordinate_query = mysqli_query($database, "SELECT `x_coordinate` FROM `users` WHERE `x_coordinate` = '$x_coordinate'");
 
-                mysqli_query($database, $query);
+                $y_coordinate = generateRandomCoordinates();
+                $y_coordinate_query = mysqli_query($database, "SELECT `y_coordinate` FROM `users` WHERE `y_coordinate` = '$y_coordinate'");
+
+                while ($x_coordinate_query->num_rows > 0 || $y_coordinate_query->num_rows > 0) {
+                    $x_coordinate = generateRandomCoordinates();
+                    $y_coordinate = generateRandomCoordinates();
+                    $x_coordinate_query = mysqli_query($database, "SELECT `x_coordinate` FROM `users` WHERE `x_coordinate` = '$x_coordinate'");
+                    $y_coordinate_query = mysqli_query($database, "SELECT `y_coordinate` FROM `users` WHERE `y_coordinate` = '$y_coordinate'");
+                }
+
+                $color = generateRandomColor();
+                $color_query = mysqli_query($database, "SELECT `color` FROM `users` WHERE `color` = '$color'");
+
+                while ($color_query->num_rows > 0) {
+                    $color = generateRandomColor();
+                    $color_query = mysqli_query($database, "SELECT `color` FROM `users` WHERE `color` = '$color'");
+                }
+
+                mysqli_query($database, "INSERT INTO `users` (`username`, `password`, `x_coordinate`, `y_coordinate`, `color`) VALUES ('$username', '$password', '$x_coordinate', '$y_coordinate', '$color')");
             }
         }
     }
@@ -72,7 +97,7 @@
                 $user = mysqli_fetch_assoc($result);
                 $_SESSION['user'] = $data['username'];
 
-                header('Location: ../index.php');
+                header('Location: index.php');
                 die();
             }
         }

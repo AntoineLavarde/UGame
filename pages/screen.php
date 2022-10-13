@@ -1,9 +1,21 @@
 <?php
-  $players = [
-     "damdoshi" => ["x" => 50, "y" => 150, "color" => "red"],
-     "metalman" => ["x" => 200, "y" => 300, "color" => "green"],
-     "la tentacule pourpre" => ["x" => 490, "y" => 300, "color" => "purple"],
-  ];
+
+  require_once  ('config.php');
+
+  function fetchDatabase($database) {
+    return mysqli_query($database, "SELECT * FROM users");
+  }
+
+  $data = fetchDatabase($database);
+
+  $players = array();
+
+  if (!empty($data)) {
+    foreach ($data as $index => $column) {
+      $players[$column['username']] = ["x" => $column['x_coordinate'], "y" => $column['y_coordinate'], "color" => $column['color']];
+    }
+  }
+
 ?>
 
 <style>
