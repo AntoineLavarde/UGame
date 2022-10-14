@@ -15,7 +15,6 @@
 <body> 
 <?php
 $dir = 'pages/';
-echo($_SESSION['user']);
 if(isset($_SESSION['user'])){
    $qs = ("SELECT * FROM users WHERE username ='" . $_SESSION['user']. "'");
    $data = mysqli_query($database,$qs);
@@ -23,6 +22,7 @@ if(isset($_SESSION['user'])){
 }else{
     require($dir . "login.php");
 }
+//comment test caca
 ?>
 </body>
 </html>
