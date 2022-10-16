@@ -10,13 +10,13 @@
         session_start();
         require_once ('config.php');
 
-        $data = mysqli_query($database, "SELECT * FROM users");
+        $data = mysqli_query($database, "SELECT * FROM `users`");
 
         $players = array();
 
         if (!empty($data)) {
             foreach ($data as $index => $column) {
-                $players[$column['username']] = ["x" => $column['x_coordinate'], "y" => $column['y_coordinate'], "color" => $column['color']];
+                $players[$column['username']] = ["x" => $column['x_coordinate'], "y" => $column['y_coordinate'], "color" => $column['color'], "industry" => $column['industry'], "energy" => $column['energy'], "industry_level" => $column['industry_level'], "energetic_plant_level" => $column['energetic_plant_level']];
             }
         }
 
@@ -30,8 +30,8 @@
             $result = mysqli_query($database, $query);
             $row = mysqli_fetch_assoc($result);
 
-            $industry_cost_in_energy = 10 * $row['industry_level'];
-            $industry_cost_in_industry = 200 * $row['industry_level'];
+            $industry_cost_in_energy = 10 * ($row['industry_level'] + 1);
+            $industry_cost_in_industry = 200 * ($row['industry_level'] + 1);
 
             echo "<p class='construction'>Industry</p>";
             echo "<p class='construction'>Cost</p>";
@@ -45,7 +45,7 @@
 
         <?php
 
-            $energetic_plant_cost_in_industry = 200 * $row['energetic_plant_level'];
+            $energetic_plant_cost_in_industry = 200 * ($row['energetic_plant_level'] + 1);
 
             echo "<p class='construction'>Energetic Plant</p>";
             echo "<p class='construction'>Cost : $energetic_plant_cost_in_industry Industry</p>";
@@ -99,9 +99,9 @@
     </div>
     <script>
         var infodiv = document.getElementById("info");
-        function setInfo(name, x, y)
+        function setInfo(name, x, y, industry, industry_level, energy, energetic_plant_level)
         {
-            infodiv.innerHTML = name + "<br />X: " + x + "<br />Y: " + y;
+            infodiv.innerHTML = "username: " + name + "<br />&emsp; &emsp; X: " + x + "&emsp; &emsp; Y: " + y + "&emsp; &emsp; industry: " + industry + "&emsp; &emsp; industry level: " + industry_level + "&emsp; &emsp; energy: " + energy + "&emsp; &emsp; energy level: " + energetic_plant_level;
         }
     </script>
     <div id="screen">
@@ -110,10 +110,8 @@
             <div
                 class="player_dot"
                 style="top: <?=$player["y"] * 3; ?>; left: <?=$player["x"] * 3; ?>; background-color: <?=$player["color"]; ?>;"
-                onmouseover="setInfo('<?=$name; ?>', <?=$player["x"]; ?>, <?=$player["y"]; ?>, <?=$player["industry"]; ?>, <?=$player["energy"]; ?>, <?=$player["industryLevel"]; ?>, <?=$player["energyLevel"]; ?>);"
+                onmouseover="setInfo('<?=$name; ?>', <?=$player["x"]; ?>, <?=$player["y"]; ?>, <?=$player["industry"]; ?>, <?=$player["energy"]; ?>, <?=$player["industry_level"]; ?>, <?=$player["energetic_plant_level"]; ?>);"
                 >
-                <!-- infodiv.innerHTML = "username: " + name + "<br />&emsp; &emsp; X: " + x + "&emsp; &emsp; Y: " + y + "&emsp; &emsp; industry: " + industry + "&emsp; &emsp; industry level: " + industryLevel + "&emsp; &emsp; energy: " + energy + "&emsp; &emsp; energy level: " + energyLevel;
-                $players[$column['username']] = ["x" => $column['x_coordinate'], "y" => $column['y_coordinate'], "color" => $column['color'], "industry" => $column['industry'], "energy" => $column['energy'], "industryLevel" => $column['industry_level'], "energyLevel" => $column['energetic_plant_level']]; -->
             </div>
         <?php } ?>
     </div>
