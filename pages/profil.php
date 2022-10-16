@@ -31,7 +31,6 @@
             echo "<label for='username'>Username : $_SESSION[user]</label>";
 
         ?>
-        <button onclick="window.location.href='update_profil.php';">Modify Profil Informations</button>
         <button onclick="window.location.href='disconnect.php';">Disconnect</button>
     </div>
 </body>

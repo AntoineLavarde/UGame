@@ -46,7 +46,7 @@
         $result = mysqli_query($database, "SELECT `username` FROM `users` WHERE LOWER(`username`) = LOWER('$username')");
         $count = $result -> num_rows;
 
-        if ($count < 1) { #Print alert in JS if username already exists
+        if ($count < 1) {
             if ($_REQUEST['register_password'] === $_REQUEST['password_confirmation']) {
                 $password = stripslashes(password_hash($_REQUEST['register_password'], PASSWORD_BCRYPT));
                 $password = mysqli_real_escape_string($database, $password);
@@ -73,7 +73,22 @@
                 }
 
                 mysqli_query($database, "INSERT INTO `users` (`username`, `password`, `x_coordinate`, `y_coordinate`, `color`) VALUES ('$username', '$password', '$x_coordinate', '$y_coordinate', '$color')");
+            } else {
+
+                ?>
+
+                <script>alert("Passwords are not matching!");</script>
+
+                <?php
             }
+
+        } else {
+
+            ?>
+
+            <script>alert("Username already exists!");</script>
+
+            <?php
         }
     }
 
@@ -99,7 +114,23 @@
 
                 header('Location: index.php');
                 die();
+            } else {
+
+                ?>
+
+                <script>alert("Incorrect password!");</script>
+
+                <?php
             }
+
+        } else {
+
+            ?>
+
+            <script>alert("Username doesn't exist!");</script>
+
+            <?php
+
         }
     }
 ?>
