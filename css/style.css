@@ -1,5 +1,4 @@
-/* CSS */
-.button-menu {
+/*.button-menu {
   align-items: center;
   margin-top: 300px;
   background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
@@ -94,11 +93,26 @@
 @media (min-width: 768px) {
   .button-account {
     font-size: 24px;
-    min-width: 196px;
+    min-width: 16px;
   }
 }
-.topright{
-    position: absolute;
-    top: 13px;
-    right: 16px;
+
+.account_button {
+  color: #db3eb1;
+  border: 6px solid #db3eb1;
+  border-radius:15px;
+  padding: 15px 25px;
+  font-size: 30px;
+  font-family: tahoma;
+  letter-spacing:5px;
+  cursor: pointer;
+  font-weight: bold;
+  filter: drop-shadow(0 0 15px #db3eb1) drop-shadow(0 0 50px #db3eb1) contrast(2) brightness(2);
+  transition: .5s;
 }
+
+.account_button:hover {
+  color: black;
+  background-color: #db3eb1;
+  filter: drop-shadow(0 0 20px #db3eb1) contrast(2) brightness(2);
+}*/

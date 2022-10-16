@@ -1,6 +1,6 @@
 <?php
 
-  require_once  ('config.php');
+  require_once ('config.php');
 
   function fetchDatabase($database) {
     return mysqli_query($database, "SELECT * FROM users");
@@ -23,27 +23,47 @@
   {
     background-color: gray;
   }
-  #info
-  {
-     z-index: 1;
-     border: 1px solid black;
-     width: 1500px;
-     height: 100px;
-     position: fixed;
-     left: calc((100% - 1500px) / 2);
-     top: 0px;
-     background-color: white;
-  }
+
   #screen
   {
     position: absolute;
-    top: 110px;
+    top: 205px;
     left: calc((100% - 1500px) / 2);
     background-color: white;
-    border: 5px solid black;
     width: 1500px;
     height: 1500px;
   }
+
+  #info
+  {
+     z-index: 1;
+     width: 1500px;
+     height: 205px;
+     position: fixed;
+     left: calc((100% - 1500px) / 2);
+     top: 0px;
+     background-color: black;
+     color: white;
+  }
+
+  .left {
+    position: fixed;
+    top: 205px;
+    left: calc((100% - 1905px) / 2);
+    background-color: black;
+    width: 203px;
+    height: 775px;
+  }
+
+  .right {
+    position: fixed;
+    top: 205px;
+    right: calc((100% - 1905px) / 2);
+    background-color: black;
+    width: 202px;
+    height: 775px;
+  }
+
   .player_dot
   {
     position: absolute;
@@ -59,7 +79,11 @@
     height: 3px;
   }
 </style>
+<div class="left">
+</div>
 <div id="info">
+</div>
+<div class="right">
 </div>
 <script>
   var infodiv = document.getElementById("info");

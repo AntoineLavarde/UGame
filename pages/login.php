@@ -1,6 +1,6 @@
 <head>
     <title>Register/Login</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="pages/css/style.css" type="text/css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@
         $username = stripslashes($_REQUEST['register_username']);
         $username = mysqli_real_escape_string($database, $username);
 
-        $result = mysqli_query($database, "SELECT `username` FROM `users` WHERE `username` = '$username'");
+        $result = mysqli_query($database, "SELECT `username` FROM `users` WHERE LOWER(`username`) = LOWER('$username')");
         $count = $result -> num_rows;
 
         if ($count < 1) { #Print alert in JS if username already exists

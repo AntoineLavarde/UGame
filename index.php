@@ -18,7 +18,7 @@ $dir = 'pages/';
 if(isset($_SESSION['user'])){
    $qs = ("SELECT * FROM users WHERE username ='" . $_SESSION['user']. "'");
    $data = mysqli_query($database,$qs);
-   require($dir . "screen.php");
+   require($dir . "map.php");
 }else{
     require($dir . "login.php");
 }
