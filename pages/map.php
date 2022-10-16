@@ -99,7 +99,7 @@
     </div>
     <script>
         var infodiv = document.getElementById("info");
-        function setInfo(name, x, y, industry, industry_level, energy, energetic_plant_level)
+        function setInfo(name, x, y, industry, energy, industry_level, energetic_plant_level)
         {
             infodiv.innerHTML = "username: " + name + "<br />&emsp; &emsp; X: " + x + "&emsp; &emsp; Y: " + y + "&emsp; &emsp; industry: " + industry + "&emsp; &emsp; industry level: " + industry_level + "&emsp; &emsp; energy: " + energy + "&emsp; &emsp; energy level: " + energetic_plant_level;
         }

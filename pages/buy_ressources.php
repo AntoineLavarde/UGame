@@ -10,8 +10,8 @@
     $construction = $_POST['construction'];
 
     function buyIndustry($database, $row, $construction) {
-        $industry_cost_in_energy = 10 * $row['industry_level'];
-        $industry_cost_in_industry = 200 * $row['industry_level'];
+        $industry_cost_in_energy = 10 * ($row['industry_level'] + 1);
+        $industry_cost_in_industry = 200 * ($row['industry_level'] + 1);
 
         if ($construction === 'industry') {
             if ($row['energy'] >= $industry_cost_in_energy && $row['industry'] >= $industry_cost_in_industry) {
@@ -22,7 +22,7 @@
             }
         }
 
-        $energetic_plant_cost_in_industry = 200 * $row['energetic_plant_level'];
+        $energetic_plant_cost_in_industry = 200 * ($row['energetic_plant_level'] + 1);
 
         if ($construction === 'energetic_plant') {
             if ($row['industry'] >= $energetic_plant_cost_in_industry) {
